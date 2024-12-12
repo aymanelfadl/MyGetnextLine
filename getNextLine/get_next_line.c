@@ -1,48 +1,89 @@
 
 #include "get_next_line.h"
 
-
-char	*ft_findnewline(char *s)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	char			*res;
-    int i = 0;
-    int len = 0;
-	if (!s || !strchr(s,'\n'))
+	char	*res;
+	size_t	lens1;
+	size_t	lens2;
+
+	lens1 = 0;
+	lens2 = 0;
+	if (!s1 && !s2)
 		return (NULL);
-    while (s[len]!= '\n')
+	if (s1)
+		lens1 += strlen(s1);
+	if (s2)
+		lens2 += strlen(s2);
+	res = (char *)calloc((lens1 + lens2 + 1), sizeof(char));
+	if (!res)
+		return (NULL);
+	memcpy(res, s1, lens1);
+	memcpy(res + lens1, s2, lens2);
+	return (res);
+}
+
+char *get_line(char *buff)
+{
+    char *res;
+    int len;
+
+    len = 0;
+    while (buff[len] && buff[len]!= '\n')
         len++;
-    res = malloc(len + 1);
-    if (!res)
+    res = malloc(len++ + 1);
+    if(!res)
+    {
+        free(buff);
         return NULL;
-    res[len] = '\0'; 
+    }
+    res[len + 1] = '\0';
     while(len >= 0)
     {
         len--;
-        res[len] = s[len];
+        res[len] = buff[len];
     }
     return res;
 }
 
+// char *findnewline(char *mainbuff, char *tmpbuff)
+// {
+//     while (read(fd, tmpbuff, BUFFER_SIZE))
+// }
+
 char *get_next_line(int fd)
 {
-    char *res;
     char *buffer;
-    int len = 0;
-    buffer = malloc(BUFFER_SIZE);
-    if (!buffer)
-        return NULL;
-    if (read(fd, buffer, BUFFER_SIZE) < -1)
+    char *tmpbuf;
+    static char *holder;
+
+    buffer = NULL;
+    tmpbuf = malloc(BUFFER_SIZE);
+    if (!tmpbuf)
+        free(tmpbuf);
+    if (read(fd, tmpbuf, BUFFER_SIZE) > -1)
     {
-        free(buffer);
-        return NULL;
+        if (strchr(tmpbuf,'\n'))
+            return get_line(tmpbuf);
+        else
+        {
+            buffer = ft_strjoin(buffer, tmpbuf);
+            while (!strchr(buffer,'\n'))
+            {
+                free(tmpbuf);
+                tmpbuf = malloc(BUFFER_SIZE);
+                if (!tmpbuf)
+                    return NULL;
+                int i = read(fd, tmpbuf, BUFFER_SIZE);
+                buffer = ft_strjoin(buffer, tmpbuf);
+                if (i == 0)
+                    break ; 
+            }
+            return get_line(buffer);
+        }
     }
-    res = ft_findnewline(buffer);
-    if (!res)
-    {
-        free(buffer);
-        return NULL;
-    }
-    return res;
+    return NULL;
+    
 }
 
 int main()
@@ -50,5 +91,6 @@ int main()
     int fd = open("file.txt", O_RDONLY);
     if (fd < 0)
         return 0;
-    printf("%s",get_next_line(fd));
+    printf("1:%s\n",get_next_line(fd));
+    printf("2:%s",get_next_line(fd));
 }
