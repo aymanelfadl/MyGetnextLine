@@ -23,7 +23,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	return (res);
 }
 
-char *get_line(char *buff)
+char *get_line(char *buff, char **holder)
 {
     char *res;
     int len;
@@ -31,6 +31,7 @@ char *get_line(char *buff)
     len = 0;
     while (buff[len] && buff[len]!= '\n')
         len++;
+    *holder = &buff[len+1];
     res = malloc(len++ + 1);
     if(!res)
     {
@@ -46,11 +47,6 @@ char *get_line(char *buff)
     return res;
 }
 
-// char *findnewline(char *mainbuff, char *tmpbuff)
-// {
-//     while (read(fd, tmpbuff, BUFFER_SIZE))
-// }
-
 char *get_next_line(int fd)
 {
     char *buffer;
@@ -64,22 +60,19 @@ char *get_next_line(int fd)
     if (read(fd, tmpbuf, BUFFER_SIZE) > -1)
     {
         if (strchr(tmpbuf,'\n'))
-            return get_line(tmpbuf);
+            return get_line(tmpbuf,&holder);
         else
         {
             buffer = ft_strjoin(buffer, tmpbuf);
             while (!strchr(buffer,'\n'))
             {
-                free(tmpbuf);
-                tmpbuf = malloc(BUFFER_SIZE);
-                if (!tmpbuf)
-                    return NULL;
+               
                 int i = read(fd, tmpbuf, BUFFER_SIZE);
                 buffer = ft_strjoin(buffer, tmpbuf);
                 if (i == 0)
                     break ; 
             }
-            return get_line(buffer);
+            return get_line(buffer,&holder);
         }
     }
     return NULL;
@@ -92,5 +85,5 @@ int main()
     if (fd < 0)
         return 0;
     printf("1:%s\n",get_next_line(fd));
-    printf("2:%s",get_next_line(fd));
+    // printf("2:%s",get_next_line(fd));
 }
