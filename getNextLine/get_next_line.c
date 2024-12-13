@@ -36,7 +36,7 @@ char *ft_creatbuffer(int fd, char *buffer)
         new_buffer = ft_strjoin(buffer, temp_buffer);
         free(buffer);
         buffer = new_buffer;
-        if (strchr(buffer, '\n') || bytes_read == 0)
+        if (ft_strchr(buffer, '\n') || bytes_read == 0)
             break;
     }
     free(temp_buffer);
@@ -56,16 +56,14 @@ char *get_next_line(int fd)
     else
         buffer = ft_creatbuffer(fd, ft_strdup(""));
     free(holder);
-    if (!*buffer)
+    if (!buffer || !*buffer)
     {
         free(buffer);
         return NULL;
     }
     line = get_line(buffer);
-    if (strchr(buffer, '\n'))
-        holder = ft_strdup(strchr(buffer, '\n') + 1);
-    else
-        free(holder);
+    if (ft_strchr(buffer, '\n'))
+        holder = ft_strdup(ft_strchr(buffer, '\n') + 1);
     free(buffer);
     return line;
 }

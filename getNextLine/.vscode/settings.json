@@ -2,4 +2,7 @@
     "[c]": {
         "editor.defaultFormatter": "keyhr.42-c-format"
     },
+    "files.associations": {
+        "get_next_line.h": "c"
+    },
 }
