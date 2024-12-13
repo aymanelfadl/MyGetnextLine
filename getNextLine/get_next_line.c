@@ -1,30 +1,5 @@
 #include "get_next_line.h"
 
-char *ft_strjoin(char const *s1, char const *s2)
-{
-    char *res;
-    size_t lens1;
-    size_t lens2;
-
-    lens1 = 0;
-    lens2 = 0;
-    if (!s1 && !s2)
-        return NULL;
-    if (s1)
-        lens1 = strlen(s1);
-    if (s2)
-        lens2 = strlen(s2);
-    res = malloc(lens1 + lens2 + 1);
-    if (!res)
-        return NULL;
-    if (s1)
-        memcpy(res, s1, lens1);
-    if (s2)
-        memcpy(res + lens1, s2, lens2);
-    res[lens1 + lens2] = '\0';
-    return res;
-}
-
 char *get_line(char *buff)
 {
     int len = 0;
@@ -35,7 +10,7 @@ char *get_line(char *buff)
     char *res = malloc(len + 1);
     if (!res)
         return NULL;
-    memcpy(res, buff, len);
+    ft_memcpy(res, buff, len);
     res[len] = '\0';
     return res;
 }
@@ -77,9 +52,9 @@ char *get_next_line(int fd)
     if (fd < 0 || BUFFER_SIZE <= 0)
         return NULL;
     if (holder)
-        buffer = ft_creatbuffer(fd, strdup(holder));
+        buffer = ft_creatbuffer(fd, ft_strdup(holder));
     else
-        buffer = ft_creatbuffer(fd, strdup(""));
+        buffer = ft_creatbuffer(fd, ft_strdup(""));
     free(holder);
     if (!*buffer)
     {
@@ -88,26 +63,9 @@ char *get_next_line(int fd)
     }
     line = get_line(buffer);
     if (strchr(buffer, '\n'))
-        holder = strdup(strchr(buffer, '\n') + 1);
+        holder = ft_strdup(strchr(buffer, '\n') + 1);
     else
         free(holder);
     free(buffer);
     return line;
-}
-
-int main()
-{
-    int fd = open("file.txt", O_RDONLY);
-    if (fd < 0)
-        return 0;
-
-    char *s;
-    while ((s = get_next_line(fd)) != NULL)
-    {
-        printf("%s", s);
-        free(s);
-    }
-
-    close(fd);
-    return 0;
 }

@@ -11,5 +11,7 @@
 #define BUFFER_SIZE 5
 
 char *get_next_line(int fd);
+char *ft_strjoin(char const *s1, char const *s2);
+char	*ft_strdup(const char *s1);
 
 #endif
