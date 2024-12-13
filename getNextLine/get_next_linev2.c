@@ -1,5 +1,26 @@
 #include "get_next_line.h"
 
+
+char	*ft_strdup(const char *s1)
+{
+	size_t	len;
+	char	*ptr;
+	size_t	i;
+
+	len = strlen(s1);
+	i = 0;
+	ptr = (char *)malloc((len + 1) * sizeof(char));
+	if (ptr == NULL)
+		return (NULL);
+	while (i < len)
+	{
+		ptr[i] = s1[i];
+		i++;
+	}
+	ptr[i] = '\0';
+	return (ptr);
+}
+
 char *ft_strjoin(char const *s1, char const *s2)
 {
     char *res;
@@ -27,72 +48,78 @@ char *ft_strjoin(char const *s1, char const *s2)
 
 char *get_line(char *buff)
 {
-    int len = 0;
+    int len;
+    char *res;
+
+    len = 0;
     while (buff[len] && buff[len] != '\n')
         len++;
     if (buff[len] == '\n')
         len++;
-    char *res = malloc(len + 1);
+    res = malloc(len + 1);
     if (!res)
         return NULL;
     memcpy(res, buff, len);
     res[len] = '\0';
     return res;
 }
-char *ft_creatbuffer(int fd, char *buffer)
-{
-    size_t bytes_read;
-    char *temp_buffer;
-    char *new_buffer;
 
-    temp_buffer = malloc(BUFFER_SIZE + 1);
-    if (!temp_buffer)
+char *ft_creatbuffer(int fd,char *holder)
+{
+    char *tmpbuff;
+    size_t bytes_read;
+    char *newbuff;
+    char *buffer;
+
+    buffer = NULL;
+    tmpbuff = malloc(BUFFER_SIZE);
+    if (!tmpbuff)
         return NULL;
+    if (holder)
+    {
+        newbuff = ft_strdup(holder);
+        free(holder);
+    }
+    else
+        newbuff = ft_strdup("");
     while (1)
     {
-        bytes_read = read(fd, temp_buffer, BUFFER_SIZE);
+        bytes_read = read(fd, tmpbuff, BUFFER_SIZE);
+        
         if (bytes_read < 0)
         {
-            free(temp_buffer);
-            free(buffer);
+            free(tmpbuff);
+            free(newbuff);
             return NULL;
         }
-        temp_buffer[bytes_read] = '\0';
-        new_buffer = ft_strjoin(buffer, temp_buffer);
-        free(buffer);
-        buffer = new_buffer;
-        if (strchr(buffer, '\n') || bytes_read == 0)
-            break;
+
+        buffer = ft_strjoin(newbuff, tmpbuff);
+        free(newbuff);
+        newbuff = buffer;
+        
+        if (strchr(tmpbuff, '\n') || bytes_read == 0)
+        {
+            holder = strchr(tmpbuff, '\n') + 1;
+            break ;
+        }
     }
-    free(temp_buffer);
+    free(tmpbuff);
     return buffer;
 }
 
 char *get_next_line(int fd)
 {
     static char *holder = NULL;
-    char *line = NULL;
     char *buffer = NULL;
 
-    if (fd < 0 || BUFFER_SIZE <= 0)
+    if (fd < 0 || BUFFER_SIZE < 0)
         return NULL;
-    if (holder)
-        buffer = ft_creatbuffer(fd, strdup(holder));
-    else
-        buffer = ft_creatbuffer(fd, strdup(""));
-    free(holder);
-    if (!*buffer)
-    {
-        free(buffer);
+    buffer = ft_creatbuffer(fd, holder);
+    if (!buffer)
         return NULL;
-    }
-    line = get_line(buffer);
-    if (strchr(buffer, '\n'))
-        holder = strdup(strchr(buffer, '\n') + 1);
-    else
-        free(holder);
+    char *l = get_line(buffer);
     free(buffer);
-    return line;
+    return l;
 }
 
 int main()
