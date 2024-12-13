@@ -29,20 +29,19 @@ char *get_line(char *buff)
     int len;
 
     len = 0;
-    while (buff[len] && buff[len]!= '\n')
+    while (buff[len] && buff[len] != '\n')
         len++;
-    res = malloc(len++ + 1);
+    if (buff[len] == '\0')
+        res = malloc(len + 1);
+    else
+        res = malloc(len + 2);
     if(!res)
     {
         free(buff);
         return NULL;
     }
-    res[len + 1] = '\0';
-    while(len >= 0)
-    {
-        len--;
-        res[len] = buff[len];
-    }
+    memcpy(res, buff,len);
+    res[len] = '\0';
     return res;
 }
 
@@ -65,7 +64,7 @@ char *get_next_line(int fd)
                 int i = read(fd, tmpbuf, BUFFER_SIZE);
                 buffer = ft_strjoin(buffer, tmpbuf);
                 if (i == 0)
-                    return get_line(buffer); 
+                    break;
             }
             holder = strchr(buffer,'\n') + 1;
             return get_line(buffer);
@@ -79,8 +78,11 @@ int main()
     int fd = open("file.txt", O_RDONLY);
     if (fd < 0)
         return 0;
-    printf("1:%s",get_next_line(fd));
-    printf("2:%s",get_next_line(fd));
-    printf("3:%s",get_next_line(fd));
+    char *s = NULL;
+    while ((s = get_next_line(fd)))
+    {
+        printf("%s\n", s);
+        free(s);  // Don't forget to free the memory for each line
+    }
 
 }

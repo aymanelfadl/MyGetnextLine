@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define BUFFER_SIZE 1
+#define BUFFER_SIZE 100
 
 char *get_next_line(int fd);
 

@@ -1,3 +1,6 @@
-123
-456
-789
+Line 1: This is the first line of the text.
+Line 2: Here's the second line with some more content.
+Line 3: The third line follows right after the second.
+Line 4: Let's see how the program handles this fourth line.
+Line 5: Another line is here, making the text even longer.
+Line 6: And here's the sixth line, ready for testing.
