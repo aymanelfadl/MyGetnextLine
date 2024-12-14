@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aelfadl <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/14 20:30:02 by aelfadl           #+#    #+#             */
+/*   Updated: 2024/12/14 20:30:04 by aelfadl          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
 
 char	*get_line(char *buff)
@@ -19,26 +31,13 @@ char	*get_line(char *buff)
 	res[len] = '\0';
 	return (res);
 }
-char	*ft_update_holder(char **holder)
-{
-	char	*temp;
-
-	if (*holder)
-	{
-		temp = ft_strdup(*holder);
-		free(*holder);
-		*holder = NULL;
-	}
-	else
-		temp = ft_strdup("");
-	return (temp);
-}
 
 char	*ft_creatbuffer(int fd, char *buffer)
 {
 	ssize_t	bytes_read;
+	char	*temp_buffer;
+	char	*new_buffer;
 
-	char *temp_buffer, *new_buffer;
 	temp_buffer = malloc(BUFFER_SIZE + 1);
 	if (!temp_buffer)
 		return (NULL);
@@ -63,15 +62,16 @@ char	*ft_creatbuffer(int fd, char *buffer)
 
 char	*get_next_line(int fd)
 {
-	static char	*holder = NULL;
+	static char	*holder;
+	char 	*line;
+	char 	*buffer;
 
-	char *line, *buffer, *temp;
+	holder = NULL;
 	line = NULL;
 	buffer = NULL;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	temp = ft_update_holder(&holder);
-	buffer = ft_creatbuffer(fd, temp);
+	buffer = ft_creatbuffer(fd, holder);
 	if (!buffer || !*buffer)
 	{
 		free(buffer);
@@ -80,8 +80,28 @@ char	*get_next_line(int fd)
 	line = get_line(buffer);
 	if (!line)
 		return (free(buffer), NULL);
-	if (ft_strchr(buffer, '\n'))
-		holder = ft_strdup(ft_strchr(buffer, '\n') + 1);
+	holder = ft_strchr(buffer, '\n');
 	free(buffer);
 	return (line);
+}
+#include <fcntl.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    int fd = open("isma.txt", O_RDONLY);
+    if (fd == -1) {
+        perror("Failed to open file");
+        return 1; // Return error code if file open fails
+    }
+
+    char *d = NULL;  // Initialize the pointer
+    while ((d = get_next_line(fd)) != NULL) {
+        printf("%s", d);
+        free(d);  // Free the memory allocated by get_next_line
+    }
+
+    close(fd);  // Don't forget to close the file descriptor
+    return 0;
 }
