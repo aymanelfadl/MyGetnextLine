@@ -14,6 +14,8 @@ char	*get_line(char *buff)
 	if (!res)
 		return (NULL);
 	ft_memcpy(res, buff, len);
+	if (!res)
+		return (free(res), NULL);
 	res[len] = '\0';
 	return (res);
 }
@@ -34,10 +36,9 @@ char	*ft_update_holder(char **holder)
 
 char	*ft_creatbuffer(int fd, char *buffer)
 {
-	size_t	bytes_read;
-	char	*temp_buffer;
-	char	*new_buffer;
+	ssize_t	bytes_read;
 
+	char *temp_buffer, *new_buffer;
 	temp_buffer = malloc(BUFFER_SIZE + 1);
 	if (!temp_buffer)
 		return (NULL);
@@ -77,6 +78,8 @@ char	*get_next_line(int fd)
 		return (NULL);
 	}
 	line = get_line(buffer);
+	if (!line)
+		return (free(buffer), NULL);
 	if (ft_strchr(buffer, '\n'))
 		holder = ft_strdup(ft_strchr(buffer, '\n') + 1);
 	free(buffer);
