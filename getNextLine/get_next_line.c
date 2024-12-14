@@ -72,6 +72,7 @@ char	*get_next_line(int fd)
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	buffer = ft_creatbuffer(fd, holder);
+	printf("buffer:%s",buffer);
 	if (!buffer || !*buffer)
 	{
 		free(buffer);
@@ -81,6 +82,7 @@ char	*get_next_line(int fd)
 	if (!line)
 		return (free(buffer), NULL);
 	holder = ft_strchr(buffer, '\n');
+	printf("holder:%s",holder);
 	free(buffer);
 	return (line);
 }
@@ -98,7 +100,6 @@ int main() {
 
     char *d = NULL;  // Initialize the pointer
     while ((d = get_next_line(fd)) != NULL) {
-        printf("%s", d);
         free(d);  // Free the memory allocated by get_next_line
     }
 
