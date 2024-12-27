@@ -46,6 +46,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	res[lens1 + lens2] = '\0';
 	return (res);
 }
+
 void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
 	unsigned char	*d;
@@ -66,6 +67,7 @@ void	*ft_memcpy(void *dst, const void *src, size_t n)
 	}
 	return (dst);
 }
+
 char	*ft_strdup(char *s1)
 {
 	size_t	len;

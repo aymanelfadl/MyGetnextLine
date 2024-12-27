@@ -38,7 +38,7 @@ char	*ft_creatbuffer(int fd, char *buffer)
 	char	*temp_buffer;
 	char	*new_buffer;
 
-	temp_buffer = malloc((size_t)BUFFER_SIZE  + 1);
+	temp_buffer = malloc((size_t)BUFFER_SIZE + 1);
 	if (!temp_buffer)
 		return (NULL);
 	while (1)
@@ -57,18 +57,18 @@ char	*ft_creatbuffer(int fd, char *buffer)
 	return (buffer);
 }
 
-char *ft_update_holder(char *buffer)
+char	*ft_update_holder(char *buffer)
 {
-        if (ft_strchr(buffer, '\n'))
-                return ft_strdup(ft_strchr(buffer, '\n'));
-        return (NULL); 
+	if (ft_strchr(buffer, '\n'))
+		return (ft_strdup(ft_strchr(buffer, '\n')));
+	return (NULL);
 }
 
 char	*get_next_line(int fd)
 {
 	static char	*holder[MAX_FD];
-	char 	*line;
-	char 	*buffer;
+	char		*line;
+	char		*buffer;
 
 	line = NULL;
 	buffer = NULL;
