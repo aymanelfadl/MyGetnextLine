@@ -94,24 +94,24 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-#include <fcntl.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
+// #include <fcntl.h>
+// #include <unistd.h>
+// #include <stdio.h>
+// #include <stdlib.h>
 
-int main() {
-    int fd = open("isma.txt", O_RDONLY);
-    if (fd == -1) {
-        perror("Failed to open file");
-        return 1; // Return error code if file open fails
-    }
+// int main() {
+//     int fd = open("isma.txt", O_RDONLY);
+//     if (fd == -1) {
+//         perror("Failed to open file");
+//         return 1; // Return error code if file open fails
+//     }
 
-    char *d = NULL;  // Initialize the pointer
-    while ((d = get_next_line(fd)) != NULL) {
-		printf("line :> %s", d);
-        free(d);  // Free the memory allocated by get_next_line
-    }
-    close(fd);  // Don't forget to close the file descriptor
+//     char *d = NULL;  // Initialize the pointer
+//     while ((d = get_next_line(fd)) != NULL) {
+// 		printf("line :> %s", d);
+//         free(d);  // Free the memory allocated by get_next_line
+//     }
+//     close(fd);  // Don't forget to close the file descriptor
 
-    return 0;
-}
+//     return 0;
+// }
