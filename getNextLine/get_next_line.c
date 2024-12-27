@@ -97,12 +97,11 @@ int main() {
         return 1; // Return error code if file open fails
     }
 	char *d;
-	d = get_next_line(fd);
-	printf("%s",d);
-	free(d);
-	d = get_next_line(fd);
-	printf("%s",d);
-	free(d);
+	while(d= get_next_line(fd))
+	{
+		printf("%s",d);
+		free(d);
+	}
 	close(fd);
     return 0;
 }
