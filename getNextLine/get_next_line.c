@@ -85,23 +85,23 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-#include <fcntl.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
+// #include <fcntl.h>
+// #include <unistd.h>
+// #include <stdio.h>
+// #include <stdlib.h>
 
-int main() {
-    int fd = open("isma.txt", O_RDONLY);
-    if (fd == -1) {
-        perror("Failed to open file");
-        return 1; // Return error code if file open fails
-    }
-	char *d;
-	while(d= get_next_line(fd))
-	{
-		printf("%s",d);
-		free(d);
-	}
-	close(fd);
-    return 0;
-}
+// int main() {
+//     int fd = open("isma.txt", O_RDONLY);
+//     if (fd == -1) {
+//         perror("Failed to open file");
+//         return 1; // Return error code if file open fails
+//     }
+// 	char *d;
+// 	while(d= get_next_line(fd))
+// 	{
+// 		printf("%s",d);
+// 		free(d);
+// 	}
+// 	close(fd);
+//     return 0;
+// }

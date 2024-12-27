@@ -94,30 +94,30 @@ char	*get_next_line(int fd)
 	return (free(buffer), line);
 }
 
-#include <fcntl.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
+// #include <fcntl.h>
+// #include <unistd.h>
+// #include <stdio.h>
+// #include <stdlib.h>
 
-int main() {
-    int fd = open("isma.txt", O_RDONLY);
-    if (fd == -1) {
-        perror("Failed to open file");
-        return 1; // Return error code if file open fails
-    }
+// int main() {
+//     int fd = open("isma.txt", O_RDONLY);
+//     if (fd == -1) {
+//         perror("Failed to open file");
+//         return 1; // Return error code if file open fails
+//     }
 	
-    int fd1 = open("test.txt", O_RDONLY);
-    if (fd == -1) {
-        perror("Failed to open file");
-        return 1; // Return error code if file open fails
-    }
-	char *d = get_next_line(fd);
-	printf("%s", d);
-	free(d);
-	d = get_next_line(fd1);
-	printf("%s", d);
-	free(d);
-    close(fd);  // Don't forget to close the file descriptor
-	close(fd1);
-    return 0;
-}
+//     int fd1 = open("test.txt", O_RDONLY);
+//     if (fd == -1) {
+//         perror("Failed to open file");
+//         return 1; // Return error code if file open fails
+//     }
+// 	char *d = get_next_line(fd);
+// 	printf("%s", d);
+// 	free(d);
+// 	d = get_next_line(fd1);
+// 	printf("%s", d);
+// 	free(d);
+//     close(fd);  // Don't forget to close the file descriptor
+// 	close(fd1);
+//     return 0;
+// }
