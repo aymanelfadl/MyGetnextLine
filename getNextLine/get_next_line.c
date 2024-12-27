@@ -59,11 +59,9 @@ char	*ft_creatbuffer(int fd, char *buffer)
 
 char *ft_update_holder(char *buffer)
 {
-
 	if (ft_strchr(buffer, '\n'))
 		return ft_strdup(ft_strchr(buffer, '\n'));
-	else 
-		return ft_strdup(""); 
+	return (NULL);
 }
 
 char	*get_next_line(int fd)
@@ -98,18 +96,13 @@ int main() {
         perror("Failed to open file");
         return 1; // Return error code if file open fails
     }
-	
-    int fd1 = open("test.txt", O_RDONLY);
-    if (fd == -1) {
-        perror("Failed to open file");
-        return 1; // Return error code if file open fails
-    }
-	char *d = get_next_line(fd);
-	printf("%s", d);
+	char *d;
 	d = get_next_line(fd);
-	printf("%s", d);
+	printf("%s",d);
 	free(d);
-    close(fd);  // Don't forget to close the file descriptor
-	close(fd1);
+	d = get_next_line(fd);
+	printf("%s",d);
+	free(d);
+	close(fd);
     return 0;
 }
