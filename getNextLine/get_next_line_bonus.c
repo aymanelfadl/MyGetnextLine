@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aelfadl <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/14 20:30:02 by aelfadl           #+#    #+#             */
-/*   Updated: 2024/12/14 20:30:04 by aelfadl          ###   ########.fr       */
+/*   Created: 2024/12/27 23:30:31 by aelfadl           #+#    #+#             */
+/*   Updated: 2024/12/27 23:35:04 by aelfadl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,7 @@ char	*ft_creatbuffer(int fd, char *buffer)
 	{
 		bytes_read = read(fd, temp_buffer, BUFFER_SIZE);
 		if (bytes_read < 0)
-		{
-			free(temp_buffer);
-			return (NULL);
-		}
+			return (free(temp_buffer), NULL);
 		temp_buffer[bytes_read] = '\0';
 		new_buffer = ft_strjoin(buffer, temp_buffer);
 		free(buffer);
@@ -62,16 +59,9 @@ char	*ft_creatbuffer(int fd, char *buffer)
 
 char *ft_update_holder(char *buffer)
 {
-	char *new_holder;
-
-	new_holder = NULL;
-	if (ft_strchr(buffer, '\n'))
-	{
-		new_holder = ft_strdup(ft_strchr(buffer, '\n'));
-		if(new_holder[0] == '\0')
-			return (free(new_holder) ,NULL);
-	}
-	return new_holder;
+        if (ft_strchr(buffer, '\n'))
+                return ft_strdup(ft_strchr(buffer, '\n'));
+        return (NULL); 
 }
 
 char	*get_next_line(int fd)
@@ -93,31 +83,3 @@ char	*get_next_line(int fd)
 	holder[fd] = ft_update_holder(buffer);
 	return (free(buffer), line);
 }
-
-// #include <fcntl.h>
-// #include <unistd.h>
-// #include <stdio.h>
-// #include <stdlib.h>
-
-// int main() {
-//     int fd = open("isma.txt", O_RDONLY);
-//     if (fd == -1) {
-//         perror("Failed to open file");
-//         return 1; // Return error code if file open fails
-//     }
-	
-//     int fd1 = open("test.txt", O_RDONLY);
-//     if (fd == -1) {
-//         perror("Failed to open file");
-//         return 1; // Return error code if file open fails
-//     }
-// 	char *d = get_next_line(fd);
-// 	printf("%s", d);
-// 	free(d);
-// 	d = get_next_line(fd1);
-// 	printf("%s", d);
-// 	free(d);
-//     close(fd);  // Don't forget to close the file descriptor
-// 	close(fd1);
-//     return 0;
-// }

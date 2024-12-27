@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: aelfadl <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/14 20:30:02 by aelfadl           #+#    #+#             */
-/*   Updated: 2024/12/14 20:30:04 by aelfadl          ###   ########.fr       */
+/*   Created: 2024/12/27 23:31:00 by aelfadl           #+#    #+#             */
+/*   Updated: 2024/12/27 23:55:56 by aelfadl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*ft_creatbuffer(int fd, char *buffer)
 	char	*temp_buffer;
 	char	*new_buffer;
 
-	temp_buffer = malloc((size_t)BUFFER_SIZE  + 1);
+	temp_buffer = malloc((size_t) BUFFER_SIZE + 1);
 	if (!temp_buffer)
 		return (NULL);
 	while (1)
@@ -57,18 +57,18 @@ char	*ft_creatbuffer(int fd, char *buffer)
 	return (buffer);
 }
 
-char *ft_update_holder(char *buffer)
+char	*ft_update_holder(char *buffer)
 {
 	if (ft_strchr(buffer, '\n'))
-		return ft_strdup(ft_strchr(buffer, '\n'));
+		return (ft_strdup(ft_strchr(buffer, '\n')));
 	return (NULL);
 }
 
 char	*get_next_line(int fd)
 {
 	static char	*holder;
-	char 	*line;
-	char 	*buffer;
+	char		*line;
+	char		*buffer;
 
 	line = NULL;
 	buffer = NULL;
@@ -76,7 +76,7 @@ char	*get_next_line(int fd)
 		return (NULL);
 	buffer = ft_creatbuffer(fd, holder);
 	if (!buffer || !*buffer)
-		return (free(buffer),NULL);
+		return (free(buffer), NULL);
 	line = get_line(buffer);
 	if (!line)
 		return (free(buffer), NULL);
@@ -91,17 +91,17 @@ char	*get_next_line(int fd)
 // #include <stdlib.h>
 
 // int main() {
-//     int fd = open("isma.txt", O_RDONLY);
-//     if (fd == -1) {
-//         perror("Failed to open file");
-//         return 1; // Return error code if file open fails
-//     }
-// 	char *d;
-// 	while(d= get_next_line(fd))
-// 	{
-// 		printf("%s",d);
+//      int fd = open("isma.txt", O_RDONLY);
+//      if (fd == -1) {
+//          perror("Failed to open file");
+//          return 1; // Return error code if file open fails
+//      }
+//  	char *d;
+//  	while(d= get_next_line(fd))
+//  	{
+//  		printf("%s",d);
 // 		free(d);
-// 	}
-// 	close(fd);
-//     return 0;
+//  	}
+//  	close(fd);
+//      return 0;
 // }
