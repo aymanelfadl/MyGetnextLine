@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*get_line(char *buff)
 {
@@ -72,15 +72,15 @@ char *ft_update_holder(char *buffer)
 
 char	*get_next_line(int fd)
 {
-	static char	*holder;
+	static char	*holder[MAX_FD];
 	char 	*line;
 	char 	*buffer;
 
 	line = NULL;
 	buffer = NULL;
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || fd > MAX_FD)
 		return (NULL);
-	buffer = ft_creatbuffer(fd, holder);
+	buffer = ft_creatbuffer(fd, holder[fd]);
 	if (!buffer || !*buffer)
 	{
 		free(buffer);
@@ -89,7 +89,7 @@ char	*get_next_line(int fd)
 	line = get_line(buffer);
 	if (!line)
 		return (free(buffer), NULL);
-	holder = ft_update_holder(buffer);
+	holder[fd] = ft_update_holder(buffer);
 	free(buffer);
 	return (line);
 }
@@ -105,10 +105,17 @@ int main() {
         perror("Failed to open file");
         return 1; // Return error code if file open fails
     }
-
+	
+    int fd1 = open("test.txt", O_RDONLY);
+    if (fd == -1) {
+        perror("Failed to open file");
+        return 1; // Return error code if file open fails
+    }
+	
     char *d = NULL;  // Initialize the pointer
     while ((d = get_next_line(fd)) != NULL) {
 		printf("line :> %s", d);
+		printf("%s",get_next_line(fd1));
         free(d);  // Free the memory allocated by get_next_line
     }
     close(fd);  // Don't forget to close the file descriptor
