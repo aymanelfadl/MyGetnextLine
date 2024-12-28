@@ -83,3 +83,26 @@ char	*get_next_line(int fd)
 	holder[fd] = ft_update_holder(buffer);
 	return (free(buffer), line);
 }
+
+// #include <unistd.h>
+// #include <fcntl.h>
+
+// int main()
+// {
+// 	int fd1 = open("isma.txt", O_RDONLY);
+// 	int fd2 = open("test.txt", O_RDONLY);
+// 	if (fd1 == -1 || fd2 == -1)
+// 	{
+// 		perror("err:");
+// 		return 1;
+// 	}
+// 	char *d = get_next_line(fd1);
+// 	printf("%s",d);
+// 	free(d);
+// 	d = get_next_line(fd2);
+// 	printf("%s", d);
+// 	free(d);
+// 	close(fd1);
+// 	close(fd2);
+// 	return 0;
+// }
